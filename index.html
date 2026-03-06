@@ -1,12 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boxing game</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SNAKE // ARCADE</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+
+<div class="cabinet">
+  <div class="marquee">
+    <h1>◄ SNAKE ►</h1>
+    <div class="sub">ARCADE EDITION // 1984</div>
+  </div>
+
+  <div class="screen-frame">
+    <div style="position:relative;">
+      <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+      <!-- Start Screen -->
+      <div class="overlay" id="startScreen">
+        <div class="overlay-title">◄ SNAKE ►</div>
+        <div class="overlay-sub">INSERT COIN</div>
+        <div class="high-scores" id="highScoreDisplay">
+          HIGH SCORES<br>
+          <span class="hs-entry top" id="hs1">AAA &nbsp; 000</span><br>
+          <span class="hs-entry" id="hs2">---</span><br>
+          <span class="hs-entry" id="hs3">---</span>
+        </div>
+        <button class="btn-start" id="startBtn">► PRESS START</button>
+        <div style="font-family:'VT323',monospace;font-size:13px;color:#333;letter-spacing:2px;">USE ARROW KEYS TO PLAY</div>
+      </div>
+
+      <!-- Game Over Screen -->
+      <div class="overlay hidden" id="gameOverScreen">
+        <div class="overlay-title" style="color:var(--red);text-shadow:0 0 12px var(--red);">GAME<br>OVER</div>
+        <div class="overlay-score">
+          SCORE<br>
+          <span class="big" id="finalScore">000</span>
+        </div>
+        <div class="overlay-score" id="newHighMsg" style="color:var(--amber);display:none;font-size:10px;">
+          ★ NEW HIGH SCORE ★
+        </div>
+        <button class="btn-start" id="restartBtn">► PLAY AGAIN</button>
+      </div>
+    </div>
+
+    <!-- HUD -->
+    <div class="hud">
+      <div class="hud-box">
+        <span class="hud-label">SCORE</span>
+        <span class="hud-value" id="scoreDisplay">000</span>
+      </div>
+      <div class="hud-box">
+        <span class="hud-label">BEST</span>
+        <span class="hud-value" id="bestDisplay">000</span>
+      </div>
+      <div class="hud-box">
+        <span class="hud-label">LEVEL</span>
+        <span class="hud-value" id="levelDisplay">01</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls-bar">
+    <div class="coin-slot">▼ INSERT COIN</div>
+    <div class="key-hint"><span>↑↓←→</span> MOVE &nbsp; <span>P</span> PAUSE</div>
+  </div>
+
+  <!-- Mobile D-Pad -->
+  <div class="dpad" id="dpad">
+    <div class="dpad-btn empty"></div>
+    <div class="dpad-btn" id="btnUp">▲</div>
+    <div class="dpad-btn empty"></div>
+    <div class="dpad-btn" id="btnLeft">◄</div>
+    <div class="dpad-btn empty"></div>
+    <div class="dpad-btn" id="btnRight">►</div>
+    <div class="dpad-btn empty"></div>
+    <div class="dpad-btn" id="btnDown">▼</div>
+    <div class="dpad-btn empty"></div>
+  </div>
+</div>
+
+<script src="game.js"></script>
 </body>
 </html>
