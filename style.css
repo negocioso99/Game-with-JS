@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap');
+
+:root {
+  --green: #39ff14;
+  --dark-green: #1a7a00;
+  --amber: #ffb800;
+  --red: #ff2222;
+  --bg: #0a0a0a;
+  --panel: #111111;
+  --border: #2a2a2a;
+  --scanline: rgba(0,0,0,0.13);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: 'Press Start 2P', monospace;
+  overflow: hidden;
+  position: relative;
+}
+
+/* CRT scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--scanline) 0px,
+    var(--scanline) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  pointer-events: none;
+  z-index: 100;
+  animation: flicker 8s infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92%       { opacity: 1; }
+  93%       { opacity: 0.7; }
+  94%       { opacity: 1; }
+  96%       { opacity: 0.85; }
+  97%       { opacity: 1; }
+}
+
+/* Cabinet */
+.cabinet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+/* Marquee header */
+.marquee {
+  background: #000;
+  border: 3px solid var(--green);
+  border-bottom: none;
+  padding: 10px 40px 8px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 0 30px rgba(57,255,20,0.3), inset 0 0 20px rgba(57,255,20,0.05);
+}
+
+.marquee h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 22px;
+  color: var(--green);
+  text-shadow:
+    0 0 8px var(--green),
+    0 0 20px var(--green),
+    0 0 40px rgba(57,255,20,0.4);
+  letter-spacing: 6px;
+}
+
+.marquee .sub {
+  font-family: 'VT323', monospace;
+  font-size: 14px;
+  color: var(--amber);
+  letter-spacing: 4px;
+  margin-top: 4px;
+  text-shadow: 0 0 8px var(--amber);
+}
+
+/* Screen */
+.screen-frame {
+  background: #000;
+  border: 4px solid var(--green);
+  padding: 16px;
+  box-shadow:
+    0 0 40px rgba(57,255,20,0.25),
+    inset 0 0 30px rgba(0,0,0,0.8);
+  position: relative;
+}
+
+.screen-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+canvas {
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* HUD */
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 4px 0;
+  gap: 12px;
+}
+
+.hud-box {
+  background: #000;
+  border: 2px solid var(--dark-green);
+  padding: 6px 12px;
+  flex: 1;
+  text-align: center;
+}
+
+.hud-label {
+  font-family: 'VT323', monospace;
+  font-size: 13px;
+  color: var(--dark-green);
+  display: block;
+  letter-spacing: 2px;
+}
+
+.hud-value {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  color: var(--green);
+  display: block;
+  text-shadow: 0 0 8px var(--green);
+  margin-top: 2px;
+}
+
+/* Controls bar */
+.controls-bar {
+  background: #050505;
+  border: 3px solid var(--green);
+  border-top: none;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.coin-slot {
+  font-family: 'VT323', monospace;
+  font-size: 13px;
+  color: var(--amber);
+  letter-spacing: 2px;
+  text-shadow: 0 0 6px var(--amber);
+  animation: blink 1.4s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.key-hint {
+  font-family: 'VT323', monospace;
+  font-size: 13px;
+  color: #444;
+  letter-spacing: 1px;
+}
+
+.key-hint span {
+  color: var(--green);
+  text-shadow: 0 0 6px var(--green);
+}
+
+/* Overlays */
+.overlay {
+  position: absolute;
+  inset: 16px;
+  background: rgba(0,0,0,0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 20;
+  border: 2px solid var(--green);
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 18px;
+  color: var(--green);
+  text-shadow: 0 0 12px var(--green), 0 0 30px rgba(57,255,20,0.4);
+  text-align: center;
+  line-height: 1.6;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { text-shadow: 0 0 12px var(--green), 0 0 30px rgba(57,255,20,0.4); }
+  50%       { text-shadow: 0 0 20px var(--green), 0 0 50px rgba(57,255,20,0.7); }
+}
+
+.overlay-sub {
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  color: var(--amber);
+  letter-spacing: 3px;
+  text-shadow: 0 0 8px var(--amber);
+}
+
+.overlay-score {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: var(--green);
+  text-align: center;
+  line-height: 2;
+}
+
+.overlay-score .big {
+  font-size: 20px;
+  text-shadow: 0 0 12px var(--green);
+}
+
+/* Start / Restart button */
+.btn-start {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: #000;
+  background: var(--green);
+  border: none;
+  padding: 12px 24px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  box-shadow: 0 0 20px rgba(57,255,20,0.5);
+  transition: all 0.1s;
+  animation: btn-pulse 1s step-end infinite;
+}
+
+@keyframes btn-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+.btn-start:hover {
+  background: #fff;
+  box-shadow: 0 0 30px rgba(57,255,20,0.8);
+  transform: scale(1.05);
+  animation: none;
+}
+
+/* High scores */
+.high-scores {
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  color: #555;
+  text-align: center;
+  line-height: 1.8;
+  letter-spacing: 2px;
+}
+
+.high-scores .hs-entry { color: #888; }
+.high-scores .hs-entry.top {
+  color: var(--amber);
+  text-shadow: 0 0 6px var(--amber);
+}
+
+/* Mobile D-Pad */
+.dpad {
+  display: none;
+  grid-template-columns: repeat(3, 44px);
+  grid-template-rows: repeat(3, 44px);
+  gap: 3px;
+  margin-top: 10px;
+}
+
+.dpad-btn {
+  background: #111;
+  border: 2px solid var(--dark-green);
+  color: var(--green);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.1s;
+}
+
+.dpad-btn:active { background: var(--dark-green); }
+.dpad-btn.empty  { background: transparent; border: none; cursor: default; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .marquee h1 { font-size: 14px; letter-spacing: 3px; }
+  .dpad       { display: grid; }
+  .key-hint   { display: none; }
+}
